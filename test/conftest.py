@@ -9,7 +9,7 @@ import logging
 import pytest
 from brewblox_service import service
 
-from YOUR_PACKAGE.__main__ import create_parser
+from brewblox_hass.__main__ import create_parser
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -28,7 +28,6 @@ def app_config() -> dict:
         'port': 1234,
         'debug': False,
         'poll_interval': 5,
-        'history_topic': 'brewcast/history',
     }
 
 
@@ -39,8 +38,6 @@ def sys_args(app_config) -> list:
         '--name', app_config['name'],
         '--host', app_config['host'],
         '--port', app_config['port'],
-        '--poll-interval', app_config['poll_interval'],
-        '--history-topic', app_config['history_topic'],
     ]]
 
 

@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "YOUR-PACKAGE"
+name = "brewblox-hass"
 version = "0.1.0"
-description = "ADD DESCRIPTION HERE"
-authors = ["Code Fairies Inc <noreply@santa.com>"]
+description = "Publishing Brewblox sensors to Home Assistant"
+authors = ["BrewPi <development@brewpi.com>"]
 license = "GPL-3.0"
 readme = "README.md"
 
