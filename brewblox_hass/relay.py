@@ -4,8 +4,10 @@ Subscribes to all Spark sensors, and publishes them to the HASS broker
 
 
 import re
+from os import getenv
 from typing import Set
 
+import aiomqtt
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, mqtt
 
@@ -121,6 +123,17 @@ class Relay(features.ServiceFeature):
             )
 
 
+class PasswordEventHandler(mqtt.EventHandler):
+
+    @staticmethod
+    def create_client(config: mqtt.MQTTConfig) -> aiomqtt.Client:
+        client = mqtt.EventHandler.create_client(config)
+        client.username_pw_set(username=getenv('HASS_MQTT_USERNAME'),
+                               password=getenv('HASS_MQTT_PASSWORD'))
+
+        return client
+
+
 def setup(app: web.Application):
     config = app['config']
     hass_mqtt = {
@@ -130,6 +143,6 @@ def setup(app: web.Application):
         'path': config['hass_mqtt_path'],
     }
 
-    publisher = mqtt.EventHandler(app, **hass_mqtt)
-    features.add(app, publisher, key='hass_mqtt')
+    publisher = PasswordEventHandler(app, **hass_mqtt)
+    features.add(app, publisher)
     features.add(app, Relay(app, publisher))
