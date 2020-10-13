@@ -53,7 +53,6 @@ class Relay(features.ServiceFeature):
 
         service = message['key']
         blocks = message['data']['blocks']
-        LOGGER.info(f'Received {len(blocks)} blocks from {service}')
 
         state_topic = f'homeassistant/brewblox/{service}/state'
         published_state = {}
@@ -74,6 +73,9 @@ class Relay(features.ServiceFeature):
                 qty = block['data']['value']
                 unit = UNITS.get(qty['unit'], qty['unit'])
                 value = qty['value']
+
+                if value is not None:
+                    value = round(value, 2)
 
                 published_state[sanitized] = value
 
@@ -97,6 +99,9 @@ class Relay(features.ServiceFeature):
                 unit = UNITS.get(qty['unit'], qty['unit'])
                 value = qty['value']
 
+                if value is not None:
+                    value = round(value, 2)
+
                 published_state[sanitized] = value
 
                 if full not in self.known:
@@ -114,7 +119,6 @@ class Relay(features.ServiceFeature):
                     )
                     self.known.add(full)
 
-        LOGGER.info(f'Publishing {len(published_state)} blocks from {service}')
         if published_state:
             await self.publisher.publish(
                 topic=state_topic,
