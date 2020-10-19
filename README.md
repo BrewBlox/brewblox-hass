@@ -19,7 +19,7 @@ version: '3.7'
 services:
   # <= Other services in your config go here
   hass:
-    image: brewblox/brewblox-hass:develop
+    image: brewblox/brewblox-hass:${BREWBLOX_RELEASE}
     restart: unless-stopped
     command: '--hass-mqtt-host=HOSTNAME'
 ```
@@ -40,7 +40,7 @@ version: '3.7'
 services:
   # <= Other services in your config go here
   hass:
-    image: brewblox/brewblox-hass:develop
+    image: brewblox/brewblox-hass:${BREWBLOX_RELEASE}
     restart: unless-stopped
     command: '--hass-mqtt-host=HOSTNAME'
     environment:
