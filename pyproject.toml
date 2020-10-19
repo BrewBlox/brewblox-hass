@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "YOUR-PACKAGE"
+name = "brewblox-hass"
 version = "0.1.0"
-description = "ADD DESCRIPTION HERE"
-authors = ["Code Fairies Inc <noreply@santa.com>"]
+description = "Publishing Brewblox sensors to Home Assistant"
+authors = ["BrewPi <development@brewpi.com>"]
 license = "GPL-3.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.7"
-brewblox-service = "^0.31.0"
+brewblox-service = "^0.32.1"
 
 [tool.poetry.dev-dependencies]
 pytest-flake8 = "^1.0.4"
