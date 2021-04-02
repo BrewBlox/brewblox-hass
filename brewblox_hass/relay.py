@@ -29,7 +29,12 @@ HANDLED_TYPES = [
 UNITS = {
     'degC': '°C',
     'degF': '°F',
+    'degP': '°P',
 }
+
+
+def fallback(data: dict, k1: str, k2: str):
+    return data.get(k1, data.get(k2))
 
 
 class Relay(features.ServiceFeature):
@@ -47,10 +52,7 @@ class Relay(features.ServiceFeature):
         await mqtt.unsubscribe(app, 'brewcast/state/#')
         await mqtt.unlisten(app, 'brewcast/state/#', self.on_message)
 
-    async def on_message(self, topic: str, message: dict):
-        if message['type'] != 'Spark.state':
-            return
-
+    async def handle_spark_state(self, message: dict):
         service = message['key']
         blocks = message['data']['blocks']
 
@@ -125,6 +127,64 @@ class Relay(features.ServiceFeature):
                 message=published_state,
                 err=False,
             )
+
+    async def handle_tilt_state(self, message: dict):
+        service = message['key']
+        color = message['colour']
+        full = f'{service}_{color}'
+        state_topic = f'homeassistant/brewblox/{full}/state'
+
+        if full not in self.known:
+            LOGGER.info(f'publishing new Tilt: {service} {color}')
+            await self.publisher.publish(
+                topic=f'homeassistant/sensor/{full}_temp_c/config',
+                message={
+                    'device_class': 'temperature',
+                    'name': f'{service} {color} temperature',
+                    'state_topic': state_topic,
+                    'unit_of_measurement': UNITS['degC'],
+                    'value_template': '{{ value_json.temp_c }}',
+                },
+                retain=True,
+            )
+            await self.publisher.publish(
+                topic=f'homeassistant/sensor/{full}_sg/config',
+                message={
+                    'name': f'{service} {color} SG',
+                    'state_topic': state_topic,
+                    'value_template': '{{ value_json.sg }}',
+                },
+                retain=True,
+            )
+            await self.publisher.publish(
+                topic=f'homeassistant/sensor/{full}_plato/config',
+                message={
+                    'name': f'{service} {color} Plato',
+                    'state_topic': state_topic,
+                    'unit_of_measurement': UNITS['degP'],
+                    'value_template': '{{ value_json.plato }}',
+                },
+                retain=True,
+            )
+            self.known.add(full)
+
+        data = message['data']
+        await self.publisher.publish(
+            topic=state_topic,
+            message={
+                'temp_c': fallback(data, 'Calibrated temperature[degC]', 'Temperature[degC]'),
+                'sg': fallback(data, 'Calibrated specific gravity', 'Specific gravity'),
+                'plato': fallback(data, 'Calibrated plato[degP]', 'Plato[degP]'),
+            },
+            err=False,
+        )
+
+    async def on_message(self, topic: str, message: dict):
+        if message['type'] == 'Spark.state':
+            return await self.handle_spark_state(message)
+
+        if message['type'] == 'Tilt.state':
+            return await self.handle_tilt_state(message)
 
 
 class PasswordEventHandler(mqtt.EventHandler):
