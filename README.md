@@ -47,3 +47,19 @@ services:
       - HASS_MQTT_USERNAME
       - HASS_MQTT_PASSWORD
 ```
+
+```
+{
+  "key": "tilt",
+  "type": "Tilt.state",
+  "colour": "black",
+  "timestamp": 1617370971429,
+  "data": {
+    "Temperature[degF]": 70,
+    "Temperature[degC]": 20,
+    "Specific gravity": 1.003,
+    "Signal strength[dBm]": -90,
+    "Plato[degP]": 100
+  }
+}
+```
