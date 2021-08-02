@@ -33,7 +33,7 @@ webargs = "<6.0"
 
 [[package]]
 name = "aiomqtt"
-version = "0.1.2"
+version = "0.1.3"
 description = "An AsyncIO asynchronous wrapper around paho-mqtt."
 category = "main"
 optional = false
@@ -114,16 +114,16 @@ toml = "*"
 
 [[package]]
 name = "brewblox-service"
-version = "0.32.2"
+version = "0.33.0"
 description = "Scaffolding for Brewblox backend services"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.7,<4"
 
 [package.dependencies]
-aiohttp = ">=3.7.3,<4.0.0"
+aiohttp = ">=3.7.4,<4.0.0"
 aiohttp-apispec = ">=2.2.1,<3.0.0"
-aiomqtt = ">=0.1.1,<0.2.0"
+aiomqtt = ">=0.1.3,<0.2.0"
 
 [[package]]
 name = "chardet"
@@ -489,7 +489,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<4"
-content-hash = "c614a1a644bcdf475ca8baa0f2ae7441936f3fa1f9086997951d77df62b08e41"
+content-hash = "00b4a2b39d917cc32de8ab5187147331167402f4cd73385d20e72431535c0e40"
 
 [metadata.files]
 aiohttp = [
@@ -535,7 +535,7 @@ aiohttp-apispec = [
     {file = "aiohttp-apispec-2.2.1.tar.gz", hash = "sha256:557c8787ffe84165b89f581ce753795b8459d6f5d0776d3f32af0f5607ac1442"},
 ]
 aiomqtt = [
-    {file = "aiomqtt-0.1.2.tar.gz", hash = "sha256:d4209813d5bfd0f0cadb1b5e85eb10c7636c453270f30863134fbfadcf9c3f43"},
+    {file = "aiomqtt-0.1.3.tar.gz", hash = "sha256:8c09676cbc1e682ea7b282fcd9bcae1b9630855dacc5180dbcacbee069b9576d"},
 ]
 apispec = [
     {file = "apispec-3.3.2-py2.py3-none-any.whl", hash = "sha256:a1df9ec6b2cd0edf45039ef025abd7f0660808fa2edf737d3ba1cf5ef1a4625b"},
@@ -562,8 +562,8 @@ autopep8 = [
     {file = "autopep8-1.5.6.tar.gz", hash = "sha256:5454e6e9a3d02aae38f866eec0d9a7de4ab9f93c10a273fb0340f3d6d09f7514"},
 ]
 brewblox-service = [
-    {file = "brewblox-service-0.32.2.tar.gz", hash = "sha256:604f1a4ed28b664b26e652e2f3a36810195584ab982cfa5c3f8bd55a99ac4bd6"},
-    {file = "brewblox_service-0.32.2-py3-none-any.whl", hash = "sha256:c4ee96714c0b1a86107e873dbd52c4701c38828f83e47bc23638934cd05d1aab"},
+    {file = "brewblox-service-0.33.0.tar.gz", hash = "sha256:7dbfdf97ae5e63f0410aabb322aff87d98d2195865e9082adb13d8622b4c93ea"},
+    {file = "brewblox_service-0.33.0-py3-none-any.whl", hash = "sha256:d11501e2f50e69f1117f3ede735234d72ad2fea183261e4be30e05fe1bc013fa"},
 ]
 chardet = [
     {file = "chardet-4.0.0-py2.py3-none-any.whl", hash = "sha256:f864054d66fd9118f2e67044ac8981a54775ec5b67aed0441892edb553d21da5"},
