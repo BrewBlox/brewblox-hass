@@ -49,14 +49,14 @@ steps:
   displayName: Run Pytest
 
 - bash: |
-    curl -fsSL https://raw.githubusercontent.com/BrewBlox/deployed-images/develop/prepare_buildx.sh | bash
+    docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+    docker buildx create --use
+    docker buildx inspect --bootstrap
   displayName: Prepare buildx
   condition: and(succeeded(), variables.BRANCH)
 
 - bash: |
-    docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    docker buildx create --use
-    docker buildx inspect --bootstrap
+    echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USER) --password-stdin
   displayName: Docker login
   condition: and(succeeded(), variables.BRANCH)
 
