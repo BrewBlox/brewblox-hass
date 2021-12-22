@@ -130,17 +130,18 @@ class Relay(features.ServiceFeature):
 
     async def handle_tilt_state(self, message: dict):
         service = message['key']
-        color = message['colour']
-        full = f'{service}_{color}'
+        name = message['name']
+        sanitized = re.sub(REPLACE_PATTERN, '_', name)
+        full = f'{service}_{sanitized}'
         state_topic = f'homeassistant/brewblox/{full}/state'
 
         if full not in self.known:
-            LOGGER.info(f'publishing new Tilt: {service} {color}')
+            LOGGER.info(f'publishing new Tilt: {service} {name}')
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_temp_c/config',
                 message={
                     'device_class': 'temperature',
-                    'name': f'{service} {color} temperature',
+                    'name': f'{service} {name} temperature',
                     'state_topic': state_topic,
                     'unit_of_measurement': UNITS['degC'],
                     'value_template': '{{ value_json.temp_c }}',
@@ -150,7 +151,7 @@ class Relay(features.ServiceFeature):
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_sg/config',
                 message={
-                    'name': f'{service} {color} SG',
+                    'name': f'{service} {name} SG',
                     'state_topic': state_topic,
                     'value_template': '{{ value_json.sg }}',
                 },
@@ -159,7 +160,7 @@ class Relay(features.ServiceFeature):
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_plato/config',
                 message={
-                    'name': f'{service} {color} Plato',
+                    'name': f'{service} {name} Plato',
                     'state_topic': state_topic,
                     'unit_of_measurement': UNITS['degP'],
                     'value_template': '{{ value_json.plato }}',
@@ -172,9 +173,9 @@ class Relay(features.ServiceFeature):
         await self.publisher.publish(
             topic=state_topic,
             message={
-                'temp_c': fallback(data, 'Calibrated temperature[degC]', 'Temperature[degC]'),
-                'sg': fallback(data, 'Calibrated specific gravity', 'Specific gravity'),
-                'plato': fallback(data, 'Calibrated plato[degP]', 'Plato[degP]'),
+                'temp_c': data['temperature[degC]'],
+                'sg': data['specificGravity'],
+                'plato': data['plato[degP]'],
             },
             err=False,
         )
