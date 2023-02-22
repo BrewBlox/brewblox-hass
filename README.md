@@ -10,7 +10,7 @@ We'll probably get around to extending this service, but it will take some time.
 
 ## Getting started
 
-First, enable MQTT discovery in HA: https://www.home-assistant.io/docs/mqtt/discovery/.
+First, enable MQTT discovery in HA: <https://www.home-assistant.io/docs/mqtt/discovery/>.
 
 Then, add the brewblox-hass service to your docker-compose.yml file:
 
@@ -28,7 +28,7 @@ Replace `HOSTNAME` with the hostname or IP address of the machine where your HA 
 
 If your broker requires a username and password, add the following entries to your `brewblox/.env` file:
 
-```
+```env
 HASS_MQTT_USERNAME=changeme
 HASS_MQTT_PASSWORD=changeme
 ```
