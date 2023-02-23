@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "brewblox-hass"
-version = "0.1.0"
+version = "1.0.0"
 description = "Publishing Brewblox sensors to Home Assistant"
 authors = ["BrewPi <development@brewpi.com>"]
 license = "GPL-3.0"
@@ -8,10 +8,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-brewblox-service = "^0.34.0"
+brewblox-service = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
-pytest-flake8 = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-aiohttp = "*"
