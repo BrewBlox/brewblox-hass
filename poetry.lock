@@ -223,13 +223,13 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "brewblox-service"
-version = "1.0.2"
+version = "2.1.0"
 description = "Scaffolding for Brewblox backend services"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4"
 files = [
-    {file = "brewblox_service-1.0.2.tar.gz", hash = "sha256:547ea64d1ffd43cd5985d16647ea6e4550d0a5ba824fbe1c109da624ce1a3e98"},
+    {file = "brewblox_service-2.1.0.tar.gz", hash = "sha256:c2a7e0393625bf53a2d26358188e99da47447250eb0681442a0af525dd9503c1"},
 ]
 
 [package.dependencies]
@@ -1078,4 +1078,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4"
-content-hash = "9dcefdb2b0fe94bc3929e4aff30cd6c021ee267130cfcd0906218286a0806eb0"
+content-hash = "7e5abbcdc780c21d55339489b20a2202a36c5983b1b96e72876cb04c03a2087d"
