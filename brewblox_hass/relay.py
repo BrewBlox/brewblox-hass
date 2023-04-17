@@ -3,6 +3,7 @@ Subscribes to all Spark sensors, and publishes them to the HASS broker
 """
 
 
+import json
 import re
 from os import getenv
 from typing import Set
@@ -85,13 +86,13 @@ class Relay(features.ServiceFeature):
                     LOGGER.info(f'publishing new sensor: {id}')
                     await self.publisher.publish(
                         topic=f'homeassistant/sensor/{full}/config',
-                        message={
+                        message=json.dumps({
                             'device_class': 'temperature',
                             'name': f'{id} ({service})',
                             'state_topic': state_topic,
                             'unit_of_measurement': unit,
                             'value_template': '{{ value_json.' + sanitized + ' }}',
-                        },
+                        }),
                         retain=True,
                     )
                     self.known.add(full)
@@ -110,13 +111,13 @@ class Relay(features.ServiceFeature):
                     LOGGER.info(f'publishing new setpoint: {id}')
                     await self.publisher.publish(
                         topic=f'homeassistant/sensor/{full}/config',
-                        message={
+                        message=json.dumps({
                             'device_class': 'temperature',
                             'name': f'{id} ({service})',
                             'state_topic': state_topic,
                             'unit_of_measurement': unit,
                             'value_template': '{{ value_json.' + sanitized + ' }}',
-                        },
+                        }),
                         retain=True,
                     )
                     self.known.add(full)
@@ -139,32 +140,32 @@ class Relay(features.ServiceFeature):
             LOGGER.info(f'publishing new Tilt: {service} {name}')
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_temp_c/config',
-                message={
+                message=json.dumps({
                     'device_class': 'temperature',
                     'name': f'{service} {name} temperature',
                     'state_topic': state_topic,
                     'unit_of_measurement': UNITS['degC'],
                     'value_template': '{{ value_json.temp_c }}',
-                },
+                }),
                 retain=True,
             )
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_sg/config',
-                message={
+                message=json.dumps({
                     'name': f'{service} {name} SG',
                     'state_topic': state_topic,
                     'value_template': '{{ value_json.sg }}',
-                },
+                }),
                 retain=True,
             )
             await self.publisher.publish(
                 topic=f'homeassistant/sensor/{full}_plato/config',
-                message={
+                message=json.dumps({
                     'name': f'{service} {name} Plato',
                     'state_topic': state_topic,
                     'unit_of_measurement': UNITS['degP'],
                     'value_template': '{{ value_json.plato }}',
-                },
+                }),
                 retain=True,
             )
             self.known.add(full)
@@ -172,15 +173,17 @@ class Relay(features.ServiceFeature):
         data = message['data']
         await self.publisher.publish(
             topic=state_topic,
-            message={
+            message=json.dumps({
                 'temp_c': data['temperature[degC]'],
                 'sg': data['specificGravity'],
                 'plato': data['plato[degP]'],
-            },
+            }),
             err=False,
         )
 
-    async def on_message(self, topic: str, message: dict):
+    async def on_message(self, topic: str, content: str):
+        message = json.loads(content)
+
         if message['type'] == 'Spark.state':
             return await self.handle_spark_state(message)
 
