@@ -125,7 +125,7 @@ class Relay(features.ServiceFeature):
         if published_state:
             await self.publisher.publish(
                 topic=state_topic,
-                message=published_state,
+                message=json.dumps(published_state),
                 err=False,
             )
 
