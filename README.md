@@ -10,7 +10,7 @@ We'll probably get around to extending this service, but it will take some time.
 
 ## Getting started
 
-First, enable MQTT discovery in HA: <https://www.home-assistant.io/docs/mqtt/discovery/>.
+First, enable MQTT discovery in HA: <https://www.home-assistant.io/integrations/mqtt>.
 
 Then, add the brewblox-hass service to your docker-compose.yml file:
 

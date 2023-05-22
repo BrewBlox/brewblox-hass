@@ -19,13 +19,18 @@ SENSOR_TYPES = [
     'TempSensorOneWire',
     'TempSensorCombi',
     'TempSensorMock',
+    'TempSensorExternal',
 ]
 SETPOINT_TYPES = [
     'SetpointSensorPair',
 ]
+PROFILE_TYPES = [
+    'SetpointProfile',
+]
 HANDLED_TYPES = [
     *SENSOR_TYPES,
     *SETPOINT_TYPES,
+    *PROFILE_TYPES,
 ]
 UNITS = {
     'degC': '°C',
@@ -36,6 +41,10 @@ UNITS = {
 
 def fallback(data: dict, k1: str, k2: str):
     return data.get(k1, data.get(k2))
+
+
+def binary_sensor_state(value: bool):
+    return 'ON' if value else 'OFF'
 
 
 class Relay(features.ServiceFeature):
@@ -116,6 +125,26 @@ class Relay(features.ServiceFeature):
                             'name': f'{id} ({service})',
                             'state_topic': state_topic,
                             'unit_of_measurement': unit,
+                            'value_template': '{{ value_json.' + sanitized + ' }}',
+                        }),
+                        retain=True,
+                    )
+                    self.known.add(full)
+
+            if block['type'] in PROFILE_TYPES:
+                qty = block['data']['setting']
+                value = qty['value']
+
+                published_state[sanitized] = binary_sensor_state(value is not None)
+
+                if full not in self.known:
+                    LOGGER.info(f'publishing new profile state: {id}')
+                    await self.publisher.publish(
+                        topic=f'homeassistant/binary_sensor/{full}/config',
+                        message=json.dumps({
+                            'device_class': 'running',
+                            'name': f'{id} ({service})',
+                            'state_topic': state_topic,
                             'value_template': '{{ value_json.' + sanitized + ' }}',
                         }),
                         retain=True,
