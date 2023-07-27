@@ -14,7 +14,7 @@ from brewblox_service import brewblox_logger, features, mqtt
 
 LOGGER = brewblox_logger(__name__)
 
-REPLACE_PATTERN = r'[^a-zA-Z0-9_-]'
+REPLACE_PATTERN = r'[^a-zA-Z0-9_]'
 SENSOR_TYPES = [
     'TempSensorOneWire',
     'TempSensorCombi',
