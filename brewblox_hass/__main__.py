@@ -7,12 +7,13 @@ from argparse import ArgumentParser
 from brewblox_service import brewblox_logger, mqtt, scheduler, service
 
 from brewblox_hass import relay
+from brewblox_hass.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
 
 
-def create_parser(default_name='hass') -> ArgumentParser:
-    parser: ArgumentParser = service.create_parser(default_name=default_name)
+def create_parser() -> ArgumentParser:
+    parser: ArgumentParser = service.create_parser('hass')
 
     group = parser.add_argument_group('HASS broker config')
     group.add_argument('--hass-mqtt-protocol',
@@ -33,15 +34,17 @@ def create_parser(default_name='hass') -> ArgumentParser:
 
 
 def main():
+    parser = create_parser()
+    config = service.create_config(parser, model=ServiceConfig)
+    app = service.create_app(config)
 
-    app = service.create_app(parser=create_parser())
-
-    scheduler.setup(app)
-    mqtt.setup(app)
-    relay.setup(app)
+    async def setup():
+        scheduler.setup(app)
+        mqtt.setup(app)
+        relay.setup(app)
 
     service.furnish(app)
-    service.run(app)
+    service.run_app(app)
 
 
 if __name__ == '__main__':

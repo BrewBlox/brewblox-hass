@@ -8,9 +8,10 @@ import re
 from os import getenv
 from typing import Set
 
-import aiomqtt
 from aiohttp import web
 from brewblox_service import brewblox_logger, features, mqtt
+
+from brewblox_hass.models import ServiceConfig
 
 LOGGER = brewblox_logger(__name__)
 
@@ -51,16 +52,18 @@ class Relay(features.ServiceFeature):
 
     def __init__(self, app: web.Application, publisher: mqtt.EventHandler):
         super().__init__(app)
+        config: ServiceConfig = app['config']
+        self.topic = f'{config.state_topic}/#'
         self.publisher: mqtt.EventHandler = publisher
         self.known: Set[str] = set()
 
     async def startup(self, app: web.Application):
-        await mqtt.listen(app, 'brewcast/state/#', self.on_message)
-        await mqtt.subscribe(app, 'brewcast/state/#')
+        await mqtt.listen(app, self.topic, self.on_message)
+        await mqtt.subscribe(app, self.topic)
 
     async def shutdown(self, app: web.Application):
-        await mqtt.unsubscribe(app, 'brewcast/state/#')
-        await mqtt.unlisten(app, 'brewcast/state/#', self.on_message)
+        await mqtt.unsubscribe(app, self.topic)
+        await mqtt.unlisten(app, self.topic, self.on_message)
 
     async def handle_spark_state(self, message: dict):
         service = message['key']
@@ -141,7 +144,7 @@ class Relay(features.ServiceFeature):
                     LOGGER.info(f'publishing new profile state: {id}')
                     await self.publisher.publish(
                         topic=f'homeassistant/binary_sensor/{full}/config',
-                        message=json.dumps({
+                        payload=json.dumps({
                             'device_class': 'running',
                             'name': f'{id} ({service})',
                             'state_topic': state_topic,
@@ -210,8 +213,8 @@ class Relay(features.ServiceFeature):
             err=False,
         )
 
-    async def on_message(self, topic: str, content: str):
-        message = json.loads(content)
+    async def on_message(self, topic: str, payload: str):
+        message = json.loads(payload)
 
         if message['type'] == 'Spark.state':
             return await self.handle_spark_state(message)
@@ -220,26 +223,16 @@ class Relay(features.ServiceFeature):
             return await self.handle_tilt_state(message)
 
 
-class PasswordEventHandler(mqtt.EventHandler):
-
-    @staticmethod
-    def create_client(config: mqtt.MQTTConfig) -> aiomqtt.Client:
-        client = mqtt.EventHandler.create_client(config)
-        client.username_pw_set(username=getenv('HASS_MQTT_USERNAME'),
-                               password=getenv('HASS_MQTT_PASSWORD'))
-
-        return client
-
-
 def setup(app: web.Application):
-    config = app['config']
-    hass_mqtt = {
-        'protocol': config['hass_mqtt_protocol'],
-        'host': config['hass_mqtt_host'],
-        'port': config['hass_mqtt_port'],
-        'path': config['hass_mqtt_path'],
-    }
+    config: ServiceConfig = app['config']
 
-    publisher = PasswordEventHandler(app, **hass_mqtt)
+    publisher = mqtt.EventHandler(app,
+                                  protocol=config.hass_mqtt_protocol,
+                                  host=config.hass_mqtt_host,
+                                  port=config.hass_mqtt_port,
+                                  path=config.hass_mqtt_path)
+    publisher.client._client.username_pw_set(username=getenv('HASS_MQTT_USERNAME'),
+                                             password=getenv('HASS_MQTT_PASSWORD'))
+
     features.add(app, publisher)
     features.add(app, Relay(app, publisher))
