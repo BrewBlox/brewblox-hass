@@ -1,5 +1,5 @@
 """
-Tests are still todo. Add a dumy here to prevent pytest errors.
+Tests are still todo. Add a dummy here to prevent pytest errors.
 """
 
 
