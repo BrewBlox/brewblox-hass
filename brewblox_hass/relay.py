@@ -234,5 +234,5 @@ def setup(app: web.Application):
     publisher.client._client.username_pw_set(username=getenv('HASS_MQTT_USERNAME'),
                                              password=getenv('HASS_MQTT_PASSWORD'))
 
-    features.add(app, publisher)
+    features.add(app, publisher, key='HASS publisher')
     features.add(app, Relay(app, publisher))
