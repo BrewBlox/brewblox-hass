@@ -43,8 +43,7 @@ def main():
         mqtt.setup(app)
         relay.setup(app)
 
-    service.furnish(app)
-    service.run_app(app)
+    service.run_app(app, setup())
 
 
 if __name__ == '__main__':
