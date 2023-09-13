@@ -225,14 +225,14 @@ tomli = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "brewblox-service"
-version = "3.3.1"
+version = "3.3.2"
 description = "Scaffolding for Brewblox backend services"
 category = "main"
 optional = false
 python-versions = ">=3.9,<4"
 files = [
-    {file = "brewblox_service-3.3.1-py3-none-any.whl", hash = "sha256:38db50f18850a49dbb9803d49719a8b8db484218b396b709e651d4e0fdf48e04"},
-    {file = "brewblox_service-3.3.1.tar.gz", hash = "sha256:4a37dbe96955e64c9d86e7fc8623d70219e6cfe037bf9bafac8fae5e2e6b1712"},
+    {file = "brewblox_service-3.3.2-py3-none-any.whl", hash = "sha256:2b0bb621956a61e7846fa30d8005df8428416a0e3fe1ae2729f081d36bf7d8e3"},
+    {file = "brewblox_service-3.3.2.tar.gz", hash = "sha256:0bf13ecf42729978cb9e4b2b3f5b4c5b2623bdc1aab16581fa6ca299ca6b4eac"},
 ]
 
 [package.dependencies]
@@ -1081,4 +1081,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<4"
-content-hash = "f13a0062b95b95363fa7f5e8d9b81b26b91432b0bf15061d24ba6c3efab8f636"
+content-hash = "308e0a18566afb21d3e91fa9208ea787062264a7b9e78e93b687ef7110b019ae"
