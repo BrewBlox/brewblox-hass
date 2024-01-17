@@ -8,10 +8,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4"
-brewblox-service = "^2.1.0"
-cryptography = "40.0.1"
+brewblox-service = "^3.3.2"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-aiohttp = "*"
@@ -20,7 +19,8 @@ autopep8 = "*"
 pytest = "*"
 flake8-quotes = "*"
 aresponses = "*"
+invoke = "*"
 
 [build-system]
-requires = ["poetry>=0.12", "cryptography==40.0.1"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
