@@ -3,6 +3,7 @@ Subscribes to all Spark sensors, and publishes them to the HASS broker
 """
 
 
+import asyncio
 import json
 import logging
 import re
@@ -47,7 +48,7 @@ def binary_sensor_state(value: bool):
     return 'ON' if value else 'OFF'
 
 
-def handle_spark_state(message: dict):
+async def handle_spark_state(message: dict):
     known = CV_KNOWN.get()
     publisher = mqtt.CV_HASS.get()
     service = message['key']
@@ -142,7 +143,7 @@ def handle_spark_state(message: dict):
         publisher.publish(state_topic, published_state)
 
 
-def handle_tilt_state(message: dict):
+async def handle_tilt_state(message: dict):
     known = CV_KNOWN.get()
     publisher = mqtt.CV_HASS.get()
     service = message['key']
@@ -206,7 +207,9 @@ def setup():
         message = json.loads(payload)
 
         if message['type'] == 'Spark.state':
-            return handle_spark_state(message)
+            asyncio.create_task(handle_spark_state(message))
+            return
 
         if message['type'] == 'Tilt.state':
-            return handle_tilt_state(message)
+            asyncio.create_task(handle_tilt_state(message))
+            return
