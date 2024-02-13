@@ -7,20 +7,58 @@ license = "GPL-3.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4"
-brewblox-service = "^3.3.2"
+python = ">=3.11,<4"
+fastapi = "^0.109.2"
+uvicorn = { extras = ["standard"], version = "^0.27.1" }
+pydantic-settings = "^2.1.0"
+fastapi-mqtt = "^2.1.0"
+debugpy = "^1.8.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest-cov = "*"
 pytest-mock = "*"
-pytest-aiohttp = "*"
 flake8 = "*"
 autopep8 = "*"
-pytest = "*"
 flake8-quotes = "*"
-aresponses = "*"
+pytest = "*"
 invoke = "*"
+flake8-pyproject = "*"
+pytest-docker = "*"
+pytest-asyncio = "<23"
+asgi-lifespan = "*"
+pytest-httpx = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+addopts = """
+    --ignore=app/
+    --cov=brewblox_hass
+    --cov-branch
+    --cov-report=term-missing:skip-covered
+    --no-cov-on-fail
+    --durations=3
+    """
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "except asyncio.CancelledError:",
+]
+
+[tool.flake8]
+max-line-length = 120
+exclude = ".venv"
+
+[tool.autopep8]
+max-line-length = 120
