@@ -1,0 +1,637 @@
+{
+    "key": "spark-four",
+    "type": "Spark.state",
+    "data": {
+        "status": {
+            "enabled": true,
+            "service": {
+                "name": "spark-four",
+                "firmware": {
+                    "firmware_version": "7fd3fbe2",
+                    "proto_version": "06247728",
+                    "firmware_date": "2024-02-03",
+                    "proto_date": "2024-02-02"
+                },
+                "device": {
+                    "device_id": "c4dd5766bb18"
+                }
+            },
+            "controller": {
+                "system_version": "5.1.1",
+                "platform": "esp32",
+                "reset_reason": "NONE",
+                "firmware": {
+                    "firmware_version": "7fd3fbe2",
+                    "proto_version": "06247728",
+                    "firmware_date": "2024-02-03",
+                    "proto_date": "2024-02-02"
+                },
+                "device": {
+                    "device_id": "c4dd5766bb18"
+                }
+            },
+            "address": "192.168.2.2:8332",
+            "connection_kind": "TCP",
+            "connection_status": "SYNCHRONIZED",
+            "firmware_error": null,
+            "identity_error": null
+        },
+        "blocks": [
+            {
+                "id": "SystemInfo",
+                "nid": 2,
+                "type": "SysInfo",
+                "serviceId": "spark-four",
+                "data": {
+                    "deviceId": "c4dd5766bb18",
+                    "version": "7fd3fbe2",
+                    "platform": "PLATFORM_ESP",
+                    "protocolVersion": "06247728",
+                    "releaseDate": "2024-02-03",
+                    "protocolDate": "2024-02-02",
+                    "ip": "192.168.2.2",
+                    "uptime": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 610937.501,
+                        "readonly": true
+                    },
+                    "updatesPerSecond": 131.871,
+                    "systemTime": "2024-02-13T20:23:26Z",
+                    "timeZone": "CET-1CEST,M3.5.0,M10.5.0/3",
+                    "displayBrightness": 255,
+                    "voltage5": 4.5,
+                    "voltageExternal": 4.948,
+                    "memoryFree": 90324,
+                    "memoryFreeContiguous": 81904,
+                    "memoryFreeLowest": 66292,
+                    "tempUnit": "TEMP_CELSIUS"
+                }
+            },
+            {
+                "id": "DisplaySettings",
+                "nid": 7,
+                "type": "DisplaySettings",
+                "serviceId": "spark-four",
+                "data": {
+                    "widgets": [],
+                    "name": ""
+                }
+            },
+            {
+                "id": "GPIO 1",
+                "nid": 100,
+                "type": "OneWireGpioModule",
+                "serviceId": "spark-four",
+                "data": {
+                    "modulePosition": 1,
+                    "channels": [],
+                    "moduleStatus": 0,
+                    "pullUpDesired": 0,
+                    "pullUpStatus": 0,
+                    "pullUpWhenActive": 0,
+                    "pullUpWhenInactive": 0,
+                    "pullDownDesired": 0,
+                    "pullDownStatus": 0,
+                    "pullDownWhenActive": 0,
+                    "pullDownWhenInactive": 0,
+                    "overCurrent": 0,
+                    "openLoad": 0,
+                    "useExternalPower": false,
+                    "faultsHistory5m": 0,
+                    "faultsHistory60m": 0
+                }
+            },
+            {
+                "id": "GPIO 2",
+                "nid": 101,
+                "type": "OneWireGpioModule",
+                "serviceId": "spark-four",
+                "data": {
+                    "channels": [
+                        {
+                            "id": 1,
+                            "deviceType": "GPIO_DEV_DETECT_HIGH_CURRENT_2P",
+                            "pinsMask": 3,
+                            "width": 2,
+                            "name": "Yellight",
+                            "capabilities": 64,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": "Yellight"
+                            },
+                            "errorFlags": 0
+                        },
+                        {
+                            "id": 2,
+                            "deviceType": "GPIO_DEV_SSR_2P",
+                            "pinsMask": 12,
+                            "width": 2,
+                            "name": "Redlight",
+                            "capabilities": 29,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": "Redlight"
+                            },
+                            "errorFlags": 0
+                        },
+                        {
+                            "id": 3,
+                            "deviceType": "GPIO_DEV_SSR_2P",
+                            "pinsMask": 48,
+                            "width": 2,
+                            "name": "Rood 2",
+                            "capabilities": 29,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": "Rood 2"
+                            },
+                            "errorFlags": 0
+                        },
+                        {
+                            "id": 4,
+                            "deviceType": "GPIO_DEV_SSR_2P",
+                            "pinsMask": 192,
+                            "width": 2,
+                            "name": "shortled",
+                            "capabilities": 29,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": "Shortled Actuator"
+                            },
+                            "errorFlags": 0
+                        }
+                    ],
+                    "modulePosition": 2,
+                    "pullUpDesired": 10,
+                    "pullUpStatus": 10,
+                    "pullUpWhenActive": 170,
+                    "pullUpWhenInactive": 2,
+                    "pullDownDesired": 5,
+                    "pullDownStatus": 5,
+                    "pullDownWhenActive": 85,
+                    "pullDownWhenInactive": 1,
+                    "faultsHistory5m": 4,
+                    "moduleStatus": 0,
+                    "overCurrent": 0,
+                    "openLoad": 0,
+                    "useExternalPower": false,
+                    "faultsHistory60m": 0
+                }
+            },
+            {
+                "id": "GPIO 3",
+                "nid": 102,
+                "type": "OneWireGpioModule",
+                "serviceId": "spark-four",
+                "data": {
+                    "modulePosition": 3,
+                    "channels": [],
+                    "moduleStatus": 0,
+                    "pullUpDesired": 0,
+                    "pullUpStatus": 0,
+                    "pullUpWhenActive": 0,
+                    "pullUpWhenInactive": 0,
+                    "pullDownDesired": 0,
+                    "pullDownStatus": 0,
+                    "pullDownWhenActive": 0,
+                    "pullDownWhenInactive": 0,
+                    "overCurrent": 0,
+                    "openLoad": 0,
+                    "useExternalPower": false,
+                    "faultsHistory5m": 0,
+                    "faultsHistory60m": 0
+                }
+            },
+            {
+                "id": "Sensor 1",
+                "nid": 103,
+                "type": "TempSensorOneWire",
+                "serviceId": "spark-four",
+                "data": {
+                    "value": {
+                        "__bloxtype": "Quantity",
+                        "unit": "degC",
+                        "value": 20.875,
+                        "readonly": true
+                    },
+                    "address": "2819285306000094",
+                    "oneWireBusId": {
+                        "__bloxtype": "Link",
+                        "type": "OneWireBus",
+                        "id": "GPIO 1"
+                    },
+                    "offset": {
+                        "__bloxtype": "Quantity",
+                        "unit": "delta_degC",
+                        "value": 0.0
+                    }
+                }
+            },
+            {
+                "id": "Sensor 2",
+                "nid": 104,
+                "type": "TempSensorOneWire",
+                "serviceId": "spark-four",
+                "data": {
+                    "address": "2808712a0d000064",
+                    "value": {
+                        "__bloxtype": "Quantity",
+                        "unit": "degC",
+                        "value": null,
+                        "readonly": true
+                    },
+                    "offset": {
+                        "__bloxtype": "Quantity",
+                        "unit": "delta_degC",
+                        "value": 0.0
+                    },
+                    "oneWireBusId": {
+                        "__bloxtype": "Link",
+                        "type": "OneWireBus",
+                        "id": null
+                    }
+                }
+            },
+            {
+                "id": "Sensor 3",
+                "nid": 105,
+                "type": "TempSensorOneWire",
+                "serviceId": "spark-four",
+                "data": {
+                    "address": "28f75c2a0d000026",
+                    "value": {
+                        "__bloxtype": "Quantity",
+                        "unit": "degC",
+                        "value": null,
+                        "readonly": true
+                    },
+                    "offset": {
+                        "__bloxtype": "Quantity",
+                        "unit": "delta_degC",
+                        "value": 0.0
+                    },
+                    "oneWireBusId": {
+                        "__bloxtype": "Link",
+                        "type": "OneWireBus",
+                        "id": null
+                    }
+                }
+            },
+            {
+                "id": "New|DS2413-1",
+                "nid": 106,
+                "type": "DS2413",
+                "serviceId": "spark-four",
+                "data": {
+                    "address": "3a04212100000089",
+                    "channels": [
+                        {
+                            "id": 1,
+                            "capabilities": 1,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": null
+                            }
+                        },
+                        {
+                            "id": 2,
+                            "capabilities": 1,
+                            "claimedBy": {
+                                "__bloxtype": "Link",
+                                "type": "Any",
+                                "id": null
+                            }
+                        }
+                    ],
+                    "connected": false,
+                    "oneWireBusId": {
+                        "__bloxtype": "Link",
+                        "type": "OneWireBus",
+                        "id": null
+                    }
+                }
+            },
+            {
+                "id": "Yellight",
+                "nid": 107,
+                "type": "DigitalInput",
+                "serviceId": "spark-four",
+                "data": {
+                    "hwDevice": {
+                        "__bloxtype": "Link",
+                        "type": "IoArrayInterface",
+                        "id": "GPIO 2"
+                    },
+                    "channel": 1,
+                    "state": "STATE_ACTIVE",
+                    "hwState": "STATE_ACTIVE",
+                    "invert": false,
+                    "behavior": "DIRECT",
+                    "minActiveTime": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 0.0
+                    }
+                }
+            },
+            {
+                "id": "Logic Actuator",
+                "nid": 108,
+                "type": "ActuatorLogic",
+                "serviceId": "spark-four",
+                "data": {
+                    "targetId": {
+                        "__bloxtype": "Link",
+                        "type": "ActuatorDigitalInterface",
+                        "id": "Redlight"
+                    },
+                    "enabled": true,
+                    "result": "RESULT_TRUE",
+                    "expression": "a",
+                    "digital": [
+                        {
+                            "result": "RESULT_TRUE",
+                            "id": {
+                                "__bloxtype": "Link",
+                                "type": "DigitalInterface",
+                                "id": "Yellight"
+                            },
+                            "rhs": "STATE_ACTIVE",
+                            "op": "OP_VALUE_IS"
+                        }
+                    ],
+                    "analog": [],
+                    "errorPos": 0
+                }
+            },
+            {
+                "id": "Redlight",
+                "nid": 109,
+                "type": "DigitalActuator",
+                "serviceId": "spark-four",
+                "data": {
+                    "hwDevice": {
+                        "__bloxtype": "Link",
+                        "type": "IoArrayInterface",
+                        "id": "GPIO 2"
+                    },
+                    "channel": 2,
+                    "state": "STATE_ACTIVE",
+                    "desiredState": "STATE_ACTIVE",
+                    "claimedBy": {
+                        "__bloxtype": "Link",
+                        "type": "Any",
+                        "id": "Logic Actuator"
+                    },
+                    "settingMode": "CLAIMED",
+                    "constraints": {},
+                    "storedState": "STATE_INACTIVE",
+                    "invert": false,
+                    "transitionDurationPreset": "ST_OFF",
+                    "transitionDurationSetting": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 0.0
+                    },
+                    "transitionDurationValue": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": null,
+                        "readonly": true
+                    }
+                }
+            },
+            {
+                "id": "PWM",
+                "nid": 110,
+                "type": "ActuatorPwm",
+                "serviceId": "spark-four",
+                "data": {
+                    "period": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 1.0
+                    },
+                    "setting": 25.0,
+                    "enabled": true,
+                    "desiredSetting": 25.0,
+                    "storedSetting": 25.0,
+                    "constraints": {},
+                    "actuatorId": {
+                        "__bloxtype": "Link",
+                        "type": "ActuatorDigitalInterface",
+                        "id": null
+                    },
+                    "value": null,
+                    "claimedBy": {
+                        "__bloxtype": "Link",
+                        "type": "Any",
+                        "id": null
+                    },
+                    "settingMode": "STORED"
+                }
+            },
+            {
+                "id": "Fast PWM",
+                "nid": 111,
+                "type": "FastPwm",
+                "serviceId": "spark-four",
+                "data": {
+                    "frequency": "PWM_FREQ_2000HZ",
+                    "setting": 100.0,
+                    "desiredSetting": 100.0,
+                    "enabled": true,
+                    "transitionDurationPreset": "ST_CUSTOM",
+                    "transitionDurationSetting": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 10.0
+                    },
+                    "transitionDurationValue": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 10.0,
+                        "readonly": true
+                    },
+                    "storedSetting": 100.0,
+                    "constraints": {},
+                    "hwDevice": {
+                        "__bloxtype": "Link",
+                        "type": "IoArrayInterface",
+                        "id": null
+                    },
+                    "channel": 0,
+                    "value": null,
+                    "invert": false,
+                    "claimedBy": {
+                        "__bloxtype": "Link",
+                        "type": "Any",
+                        "id": null
+                    },
+                    "settingMode": "STORED"
+                }
+            },
+            {
+                "id": "Rood 2",
+                "nid": 112,
+                "type": "DigitalActuator",
+                "serviceId": "spark-four",
+                "data": {
+                    "hwDevice": {
+                        "__bloxtype": "Link",
+                        "type": "IoArrayInterface",
+                        "id": "GPIO 2"
+                    },
+                    "channel": 3,
+                    "constraints": {},
+                    "storedState": "STATE_INACTIVE",
+                    "desiredState": "STATE_INACTIVE",
+                    "state": "STATE_INACTIVE",
+                    "invert": false,
+                    "transitionDurationPreset": "ST_OFF",
+                    "transitionDurationSetting": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 0.0
+                    },
+                    "transitionDurationValue": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": null,
+                        "readonly": true
+                    },
+                    "claimedBy": {
+                        "__bloxtype": "Link",
+                        "type": "Any",
+                        "id": null
+                    },
+                    "settingMode": "STORED"
+                }
+            },
+            {
+                "id": "Shortled Actuator",
+                "nid": 113,
+                "type": "DigitalActuator",
+                "serviceId": "spark-four",
+                "data": {
+                    "hwDevice": {
+                        "__bloxtype": "Link",
+                        "type": "IoArrayInterface",
+                        "id": "GPIO 2"
+                    },
+                    "channel": 4,
+                    "constraints": {},
+                    "storedState": "STATE_INACTIVE",
+                    "desiredState": "STATE_INACTIVE",
+                    "state": "STATE_INACTIVE",
+                    "invert": false,
+                    "transitionDurationPreset": "ST_OFF",
+                    "transitionDurationSetting": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": 0.0
+                    },
+                    "transitionDurationValue": {
+                        "__bloxtype": "Quantity",
+                        "unit": "second",
+                        "value": null,
+                        "readonly": true
+                    },
+                    "claimedBy": {
+                        "__bloxtype": "Link",
+                        "type": "Any",
+                        "id": null
+                    },
+                    "settingMode": "STORED"
+                }
+            }
+        ],
+        "relations": [
+            {
+                "source": "Yellight",
+                "target": "GPIO 2",
+                "claimed": false,
+                "relation": [
+                    "hwDevice"
+                ]
+            },
+            {
+                "source": "Logic Actuator",
+                "target": "Redlight",
+                "claimed": true,
+                "relation": [
+                    "targetId"
+                ]
+            },
+            {
+                "source": "Yellight",
+                "target": "Logic Actuator",
+                "claimed": false,
+                "relation": [
+                    "digital",
+                    "0",
+                    "id"
+                ]
+            },
+            {
+                "source": "Redlight",
+                "target": "GPIO 2",
+                "claimed": false,
+                "relation": [
+                    "hwDevice"
+                ]
+            },
+            {
+                "source": "Rood 2",
+                "target": "GPIO 2",
+                "claimed": false,
+                "relation": [
+                    "hwDevice"
+                ]
+            },
+            {
+                "source": "Shortled Actuator",
+                "target": "GPIO 2",
+                "claimed": false,
+                "relation": [
+                    "hwDevice"
+                ]
+            }
+        ],
+        "claims": [
+            {
+                "source": "Logic Actuator",
+                "target": "Redlight",
+                "intermediate": []
+            },
+            {
+                "source": "Yellight",
+                "target": "GPIO 2",
+                "intermediate": []
+            },
+            {
+                "source": "Logic Actuator",
+                "target": "GPIO 2",
+                "intermediate": [
+                    "Redlight"
+                ]
+            },
+            {
+                "source": "Rood 2",
+                "target": "GPIO 2",
+                "intermediate": []
+            },
+            {
+                "source": "Shortled Actuator",
+                "target": "GPIO 2",
+                "intermediate": []
+            }
+        ]
+    }
+}
