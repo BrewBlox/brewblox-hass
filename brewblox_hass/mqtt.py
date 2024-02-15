@@ -41,6 +41,8 @@ async def mqtt_lifespan(fmqtt: FastMQTT):
 @asynccontextmanager
 async def lifespan():
     async with AsyncExitStack() as stack:
-        await stack.enter_async_context(mqtt_lifespan(CV_LOCAL.get()))
+        # Order matters here: we want to be able to publish
+        # before we start receiving messages
         await stack.enter_async_context(mqtt_lifespan(CV_HASS.get()))
+        await stack.enter_async_context(mqtt_lifespan(CV_LOCAL.get()))
         yield
