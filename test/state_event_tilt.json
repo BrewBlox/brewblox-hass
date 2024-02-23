@@ -1,0 +1,15 @@
+{
+    "key": "tilt",
+    "type": "Tilt.state",
+    "timestamp": 1707853917181,
+    "color": "Purple",
+    "mac": "DD7F97FC141E",
+    "name": "Purple",
+    "data": {
+        "temperature[degF]": 68,
+        "temperature[degC]": 20.0,
+        "specificGravity": 0.997,
+        "plato[degP]": -0.781,
+        "rssi[dBm]": -75
+    }
+}

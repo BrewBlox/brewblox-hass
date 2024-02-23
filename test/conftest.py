@@ -5,80 +5,134 @@ Any fixtures declared here are available to all test functions in this directory
 
 
 import logging
+from pathlib import Path
+from typing import AsyncGenerator, Generator
 
 import pytest
-from aiohttp import test_utils
-from brewblox_service import brewblox_logger, features, service
+from asgi_lifespan import LifespanManager
+from fastapi import FastAPI
+from httpx import AsyncClient
+from pydantic_settings import BaseSettings, PydanticBaseSettingsSource
+from pytest_docker.plugin import Services as DockerServices
 
-from brewblox_hass.models import ServiceConfig
+from brewblox_hass import app_factory, utils
+from brewblox_hass.models import HassMqttCredentials, ServiceConfig
 
-LOGGER = brewblox_logger(__name__)
-
-
-@pytest.fixture(scope='session', autouse=True)
-def log_enabled():
-    """Sets log level to DEBUG for all test functions.
-    Allows all logged messages to be captured during pytest runs"""
-    logging.getLogger().setLevel(logging.DEBUG)
-    logging.captureWarnings(True)
+LOGGER = logging.getLogger(__name__)
 
 
-@pytest.fixture
-def app_config() -> ServiceConfig:
-    return ServiceConfig(
-        # From brewblox_service
-        name='test_app',
-        host='localhost',
-        port=1234,
+class TestConfig(ServiceConfig):
+    """
+    An override for ServiceConfig that only uses
+    settings provided to __init__()
+
+    This makes tests independent from env values
+    and the content of .appenv
+    """
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (init_settings,)
+
+
+class TestCredentials(HassMqttCredentials):
+    """
+    An override for HassMqttCredentials that only uses
+    settings provided to __init__()
+
+    This makes tests independent from env values
+    and the content of .appenv
+    """
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (init_settings,)
+
+
+@pytest.fixture(autouse=True)
+def config(monkeypatch: pytest.MonkeyPatch,
+           docker_services: DockerServices,
+           ) -> Generator[ServiceConfig, None, None]:
+    cfg = TestConfig(
         debug=True,
-        mqtt_protocol='mqtt',
-        mqtt_host='eventbus',
-        mqtt_port=1883,
-        mqtt_path='/eventbus',
-        history_topic='brewcast/history',
-        state_topic='brewcast/state',
-
-        # From brewblox_hass
-        hass_mqtt_protocol='mqtt',
-        hass_mqtt_host='eventbus',
-        hass_mqtt_port=None,
-        hass_mqtt_path='/eventbus',
+        mqtt_host='localhost',
+        mqtt_port=docker_services.port_for('eventbus', 1883),
+        hass_mqtt_host='localhost',
+        hass_mqtt_port=docker_services.port_for('hass_eventbus', 1883),
     )
+    monkeypatch.setattr(utils, 'get_config', lambda: cfg)
+    yield cfg
+
+
+@pytest.fixture(autouse=True)
+def credentials(monkeypatch: pytest.MonkeyPatch,
+                ) -> Generator[HassMqttCredentials, None, None]:
+    credentials = HassMqttCredentials(
+        mqtt_username=None,
+        mqtt_password=None,
+    )
+    monkeypatch.setattr(utils, 'get_hass_credentials', lambda: credentials)
+    yield credentials
+
+
+@pytest.fixture(scope='session')
+def docker_compose_file():
+    return Path('./test/docker-compose.yml').resolve()
+
+
+@pytest.fixture(autouse=True)
+def setup_logging(config):
+    app_factory.setup_logging(True)
 
 
 @pytest.fixture
-def sys_args(app_config: ServiceConfig) -> list:
-    return [str(v) for v in [
-        'app_name',
-        '--hass-mqtt-protocol', app_config.hass_mqtt_protocol,
-        '--hass-mqtt-host', app_config.hass_mqtt_host,
-        '--hass-mqtt-path', app_config.hass_mqtt_path,
-        '--debug',
-    ]]
+def app() -> FastAPI:
+    """
+    Override this in test modules to bootstrap required dependencies.
 
-
-@pytest.fixture
-def app(app_config):
-    app = service.create_app(app_config)
+    IMPORTANT: This must NOT be an async fixture.
+    Contextvars assigned in async fixtures are invisible to test functions.
+    """
+    app = FastAPI()
     return app
 
 
 @pytest.fixture
-async def setup(app):
-    pass
+async def manager(app: FastAPI) -> AsyncGenerator[LifespanManager, None]:
+    """
+    AsyncClient does not automatically send ASGI lifespan events to the app
+    https://asgi.readthedocs.io/en/latest/specs/lifespan.html
+
+    For testing, this ensures that lifespan() functions are handled.
+    If you don't need to make HTTP requests, you can use the manager
+    without the `client` fixture.
+    """
+    async with LifespanManager(app) as mgr:
+        yield mgr
 
 
 @pytest.fixture
-async def client(app, setup, aiohttp_client, aiohttp_server):
-    """Allows patching the app or aiohttp_client before yielding it.
-
-    Any tests wishing to add custom behavior to app can override the fixture
+async def client(app: FastAPI, manager: LifespanManager) -> AsyncGenerator[AsyncClient, None]:
     """
-    LOGGER.debug('Available features:')
-    for name, impl in app.get(features.FEATURES_KEY, {}).items():
-        LOGGER.debug(f'Feature "{name}" = {impl}')
-    LOGGER.debug(app.on_startup)
-
-    test_server: test_utils.TestServer = await aiohttp_server(app)
-    test_client: test_utils.TestClient = await aiohttp_client(test_server)
-    return test_client
+    The default test client for making REST API calls.
+    Using this fixture will also guarantee that lifespan startup has happened.
+    """
+    # AsyncClient does not automatically send ASGI lifespan events to the app
+    # https://asgi.readthedocs.io/en/latest/specs/lifespan.html
+    async with AsyncClient(app=app,
+                           base_url='http://test') as ac:
+        yield ac

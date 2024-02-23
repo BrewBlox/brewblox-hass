@@ -21,10 +21,11 @@ services:
   hass:
     image: ghcr.io/brewblox/brewblox-hass:${BREWBLOX_RELEASE}
     restart: unless-stopped
-    command: '--hass-mqtt-host=HOSTNAME'
+    environment:
+      - BREWBLOX_HASS_HASS_MQTT_HOST={ADDRESS}
 ```
 
-Replace `HOSTNAME` with the hostname or IP address of the machine where your HA mosquitto broker is running.
+Replace `{ADDRESS}` with the hostname or IP address of the machine where your HA mosquitto broker is running.
 
 If your broker requires a username and password, add the following entries to your `brewblox/.env` file:
 
@@ -33,7 +34,7 @@ HASS_MQTT_USERNAME=changeme
 HASS_MQTT_PASSWORD=changeme
 ```
 
-Then extend the configuration of your `hass` service:
+Then extend your `hass` service environment:
 
 ```yml
 version: '3.7'
@@ -42,8 +43,8 @@ services:
   hass:
     image: ghcr.io/brewblox/brewblox-hass:${BREWBLOX_RELEASE}
     restart: unless-stopped
-    command: '--hass-mqtt-host=HOSTNAME'
     environment:
+      - BREWBLOX_HASS_HASS_MQTT_HOST={HOSTNAME}
       - HASS_MQTT_USERNAME
       - HASS_MQTT_PASSWORD
 ```

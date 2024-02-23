@@ -6,6 +6,19 @@ ROOT = Path(__file__).parent.resolve()
 
 
 @task
+def testclean(ctx: Context):
+    """
+    Cleans up leftover test containers.
+    Container cleanup is normally done in test fixtures.
+    This is skipped if debugged tests are stopped halfway.
+    """
+    result = ctx.run('docker ps -aq --filter "name=pytest"', hide='stdout')
+    containers = result.stdout.strip().replace('\n', ' ')
+    if containers:
+        ctx.run(f'docker rm -f {containers}')
+
+
+@task
 def build(ctx: Context):
     with ctx.cd(ROOT):
         ctx.run('rm -rf dist')
@@ -14,6 +27,6 @@ def build(ctx: Context):
 
 
 @task(pre=[build])
-def local_docker(ctx: Context, tag='local'):
+def image(ctx: Context, tag='local'):
     with ctx.cd(ROOT):
         ctx.run(f'docker build -t ghcr.io/brewblox/brewblox-hass:{tag} .')

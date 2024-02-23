@@ -1,0 +1,9 @@
+services:
+  eventbus:
+    image: ghcr.io/brewblox/mosquitto:develop
+    ports:
+      - "1883"
+  hass_eventbus:
+    image: ghcr.io/brewblox/mosquitto:develop
+    ports:
+      - "1883"
